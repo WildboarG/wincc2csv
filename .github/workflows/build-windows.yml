@@ -70,12 +70,18 @@ jobs:
           set -e
 
           VERSION="${GITHUB_REF_NAME}"
-          OUT="dist/${GOARCH}"
+          ARCH="${{ matrix.arch }}"
+          OUT="dist/${ARCH}"
+
+          echo "Packaging: ${ARCH}"
+          echo "Output directory: ${OUT}"
+
+          ls -lah "$OUT"
 
           cd "$OUT"
 
           zip -9 \
-            "../../wincc2csv-${VERSION}-windows-${GOARCH}.zip" \
+            "../../wincc2csv-${VERSION}-windows-${ARCH}.zip" \
             wincc_admin.exe \
             wincc_gen.exe \
             wincc_exporter.exe
