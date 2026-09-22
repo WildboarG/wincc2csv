@@ -90,74 +90,66 @@ jobs:
 
            
   release:
-      name: Create Release
-      if: startsWith(github.ref, 'refs/tags/')
-      needs: build
-      runs-on: ubuntu-latest
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
 
-      steps:
+    steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-            path: release
+          path: release
 
-      - name: Create Release Notes
-          shell: bash
-          run: |
-          cat > RELEASE.md <<'EOF'
-          # WinCC2CSV
-
-          Windows 多架构版本。
-
-          ## 支持平台
-
-          | 平台 | 架构 |
-          |---|---|
-          | Windows 10/11 | x64 (amd64) |
-          | Windows 10/11 | x86 (386) |
-          | Windows 10/11 | ARM64 |
-
-          ## 下载
-
-          根据你的 Windows 系统架构下载对应的 ZIP 文件。
-
-          - `amd64`：Intel / AMD 64 位 Windows
-          - `386`：32 位 Windows
-          - `arm64`：Windows ARM64
-
-          ## 包含程序
-
-          每个 ZIP 包含：
-
-          - `wincc_admin.exe` — 管理终端
-          - `wincc_gen.exe` — 脚本生成器
-          - `wincc_exporter.exe` — 导出工具
-
-          ## 使用
-
-          下载对应架构的 ZIP 文件，解压后即可使用。
-
-          ## 构建
-
-          本版本由 GitHub Actions 自动构建。
-
-          Go build flags：
-
-          ```text
-          -trimpath
-          -ldflags="-s -w"
-          ```
-
-          ## 注意
-
-          本版本面向 Windows 10 / Windows 11。
-          EOF
+      - name: Collect release files
+        shell: bash
+        run: |
+          mkdir -p release-files
+          find release -type f \( -name "*.exe" -o -name "*.zip" \) -exec cp {} release-files/ \;
+          echo "Release files:"
+          ls -lh release-files
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-            name: WinCC2CSV ${{ github.ref_name }}
-            body_path: RELEASE.md
-            files: release/**/*.zip release/**/*.exe
-            generate_release_notes: true
+          name: WinCC2CSV ${{ github.ref_name }}
+          body: |
+            # WinCC2CSV
 
+            Windows 10 / Windows 11 多架构版本。
+
+            ## 支持平台
+
+            | 平台 | 架构 |
+            |---|---|
+            | Windows 10/11 | x64 (amd64) |
+            | Windows 10/11 | x86 (386) |
+            | Windows 10/11 | ARM64 |
+
+            ## 下载
+
+            根据你的 Windows 系统架构下载对应的 ZIP 文件。
+
+            - `amd64`：Intel / AMD 64 位 Windows
+            - `386`：32 位 Windows
+            - `arm64`：Windows ARM64
+
+            ## 包含程序
+
+            每个 ZIP 包含：
+
+            - `wincc_admin.exe` — 管理终端
+            - `wincc_gen.exe` — 脚本生成器
+            - `wincc_exporter.exe` — 导出工具
+
+            ## 使用
+
+            下载对应架构的 ZIP 文件，解压后即可使用。
+
+            ## 注意
+
+            本版本面向 Windows 10 / Windows 11。
+
+          files: release-files/*
+          generate_release_notes: false
+  
+          
