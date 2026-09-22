@@ -1,0 +1,11 @@
+{
+  "server": "127.0.0.1",
+  "port": 1433,
+  "user": "sa",
+  "password": "请改成真实密码",
+  "database": "CC_rezha_26_09_06_09_24_43R",
+  "table": "WinCC_EXData",
+  "exportDir": "D:/WinCC_UserDATA/ExportData",
+  "truncateAfterExport": true,
+  "timeoutSec": 5
+}

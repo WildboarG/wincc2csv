@@ -1,0 +1,21 @@
+# 忽略具体文件
+config.json
+secret.key
+
+# 忽略所有匹配扩展名的文件
+*.log
+*.tmp
+*.exe
+
+# 忽略特定文件夹及其内容（结尾加 /）
+node_modules/
+dist/
+build/
+.idea/
+.vscode/
+
+# 忽略根目录下的某个文件（不匹配子目录中的同名文件）
+/todo.txt
+
+# 排除例外（即使前面忽略了 *.log，也不忽略 keep.log）
+!keep.log
