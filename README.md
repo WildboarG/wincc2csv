@@ -7,9 +7,6 @@
 
 ## 项目结构
 
-不再用“三个根级 `package main` 文件分别编译”的写法（那样会互相 `main redeclared` 冲突），
-统一为标准 Go 布局：所有复用逻辑进 `internal/`，可执行程序放在 `cmd/` 下。
-
 ```
 wincc2csv/
 ├── cmd/
@@ -23,7 +20,8 @@ wincc2csv/
 │   ├── generator/      # 变量→C-Script 生成核心 + Web UI
 │   └── app/            # 交互式终端应用（登录/选库选表/建表/字段/清空/删表）
 ├── config.example.json # exporter-cli 的参数模板（请复制为 config.json 使用）
-└── note/ tools/      
+└── note/ 
+tools/      
 ```
 
 ## 构建
@@ -39,7 +37,7 @@ go build -ldflags="-s -w" -o wincc_gen.exe ./cmd/scriptgen
 go build -ldflags="-s -w" -o wincc_exporter.exe ./cmd/exporter-cli
 ```
 
-可选：UPX 极致压缩 `upx --best wincc_admin.exe`。
+可选：UPX 极致压缩 `upx --best wincc_admin.exe`
 
 ## 使用
 
@@ -68,7 +66,7 @@ go build -ldflags="-s -w" -o wincc_exporter.exe ./cmd/exporter-cli
 ./wincc_exporter.exe -config config.json        # 导出到指定目录并清空表
 ./wincc_exporter.exe -config config.json -keep   # 只导出，不清空
 # 亦可用命令行参数覆盖 (如 -server xx -database xx)
-# 密码等敏感信息建议只写进 config.json（已被 .gitignore 排除）
+# 密码等敏感信息建议只写进 config.json
 ```
 
 导出文件命名：`<表名>_<yyyyMMdd_HHmmss>.csv / .xlsx`，CSV 自带 UTF-8 BOM，
