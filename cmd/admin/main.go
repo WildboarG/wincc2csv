@@ -12,7 +12,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-
+	_ "github.com/microsoft/go-mssqldb"
 	"wincc2csv/internal/app"
 	"wincc2csv/internal/generator"
 )
